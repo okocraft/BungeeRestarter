@@ -1,0 +1,4 @@
+command-to-start-proxy: ""
+kick-message:
+  default: "Please wait a moment while the proxy is rebooting."
+  ja_JP: "再起動中のため、しばらくお待ち下さい。"
