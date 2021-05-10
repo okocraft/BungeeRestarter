@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.okocraft.bungeerestarter</groupId>
+    <artifactId>bungeerestarter</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
+    <name>BungeeRestarter</name>
+    <url>https://github.com/okocraft/BungeeRestarter</url>
+    <description>A BungeeCord plugin that adds restart command.</description>
+
+    <licenses>
+        <license>
+            <name>APACHE LICENSE, VERSION 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:https://github.com/okocraft/BungeeRestarter.git</connection>
+        <developerConnection>scm:git:git@github.com:okocraft/BungeeRestarter.git</developerConnection>
+        <url>https://github.com/okocraft/BungeeRestarter</url>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/okocraft/BungeeRestarter/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>GitHub Actions</system>
+        <url>https://github.com/okocraft/BungeeRestarter/runs</url>
+    </ciManagement>
+
+    <properties>
+        <java.version>11</java.version>
+        <project.charset>UTF-8</project.charset>
+        <project.build.sourceEncoding>${project.charset}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${project.charset}</project.reporting.outputEncoding>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>bungeecord-repo</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- BungeeCord https://github.com/SpigotMC/BungeeCord -->
+        <dependency>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-api</artifactId>
+            <version>1.16-R0.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- ConfigAPI https://github.com/Siroshun09/ConfigAPI -->
+        <dependency>
+            <groupId>com.github.siroshun09.configapi</groupId>
+            <artifactId>yaml</artifactId>
+            <version>3.1.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <targetPath>.</targetPath>
+                <filtering>true</filtering>
+                <directory>src/main/resources/</directory>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <target>${java.version}</target>
+                    <source>${java.version}</source>
+                    <encoding>${project.charset}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <finalName>${project.name}-${project.version}-original</finalName>
+                    <archive combine.children="append">
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Automatic-Module-Name>${project.groupId}</Automatic-Module-Name>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <configuration>
+                    <finalName>${project.name}-${project.version}</finalName>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*</exclude>
+                                <exclude>module-info.class</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                    <minimizeJar>true</minimizeJar>
+                    <relocations>
+                        <relocation>
+                            <pattern>com.github.siroshun09.configapi</pattern>
+                            <shadedPattern>${project.groupId}.lib.configapi</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.yaml</pattern>
+                            <shadedPattern>${project.groupId}.lib.yaml</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
