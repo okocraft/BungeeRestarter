@@ -1,30 +1,14 @@
 name: Java CI
-on: [ push ]
+on: [ push, pull_request ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    if: "! contains(github.event.head_commit.message, '[CI-SKIP]')"
-    steps:
-      - uses: actions/checkout@v2.3.4
-      - name: Set up JDK 11
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: 11
-      - uses: actions/cache@v2.1.4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
-      - name: Move built jars
-        run: |
-          mkdir staging
-          cp -r target staging
-      - uses: actions/upload-artifact@v2
-        with:
-          name: Package
-          path: staging
+  build-java-11:
+    uses: okocraft/workflows/.github/workflows/maven.yml@v1
+    with:
+      java-version: '11'
+      package-name: BungeeRestarter-Build-${{ github.run_number }}
+  build-java-17:
+    uses: okocraft/workflows/.github/workflows/maven.yml@v1
+    with:
+      java-version: '17'
+      package-name: BungeeRestarter-Build-${{ github.run_number }}
