@@ -1,6 +1,6 @@
 package net.okocraft.bungeerestarter;
 
-import com.github.siroshun09.configapi.common.util.ResourceUtils;
+import com.github.siroshun09.configapi.api.util.ResourceUtils;
 import com.github.siroshun09.configapi.yaml.YamlConfiguration;
 import net.md_5.bungee.api.plugin.Plugin;
 
