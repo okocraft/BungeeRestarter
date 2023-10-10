@@ -40,6 +40,12 @@ public class RestartCommand extends Command {
         } catch (InterruptedException ignored) {
         }
 
+        Runtime.getRuntime().addShutdownHook(createShutdownHook(command));
+
+        plugin.getProxy().stop();
+    }
+
+    private Thread createShutdownHook(String command) {
         var shutdownHook =
                 new Thread(() -> {
                     try {
@@ -54,9 +60,8 @@ public class RestartCommand extends Command {
                 });
 
         shutdownHook.setDaemon(true);
-        Runtime.getRuntime().addShutdownHook(shutdownHook);
 
-        plugin.getProxy().stop();
+        return shutdownHook;
     }
 
     private void kickPlayer(ProxiedPlayer player) {
