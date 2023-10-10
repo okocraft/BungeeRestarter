@@ -56,7 +56,7 @@
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
-            <version>1.20-R0.1-SNAPSHOT</version>
+            <version>1.20-R0.1</version>
             <scope>provided</scope>
         </dependency>
         <!-- ConfigAPI https://github.com/Siroshun09/ConfigAPI -->
@@ -92,23 +92,16 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.3.0</version>
-                <configuration>
-                    <finalName>${project.name}-${project.version}-original</finalName>
-                    <archive combine.children="append">
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                        </manifest>
-                        <manifestEntries>
-                            <Automatic-Module-Name>${project.groupId}</Automatic-Module-Name>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.4.1</version>
+                <version>3.5.1</version>
                 <configuration>
                     <finalName>${project.name}-${project.version}</finalName>
                     <filters>
