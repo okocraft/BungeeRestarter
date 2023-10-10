@@ -60,7 +60,8 @@ public class RestartCommand extends Command {
     }
 
     private void kickPlayer(ProxiedPlayer player) {
-        var kickMessageKey = "kick-message." + player.getLocale().toString();
+        var locale = player.getLocale();
+        var kickMessageKey = "kick-message." + (locale != null ? locale.toString() : "default");
         var kickMessage = plugin.getConfig().getString(kickMessageKey);
 
         if (kickMessage.isEmpty()) {
